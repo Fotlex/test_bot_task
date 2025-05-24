@@ -41,7 +41,7 @@ async def cmd_start(message: Message, user: User, state: FSMContext):
     
     if in_channel and in_group:
         await message.answer(
-            f'MENU_TEXT {user.first_name}',
+            f'{MENU_TEXT} {user.first_name}',
             reply_markup=menu_keyboard()
         )
         await state.set_state(Steps.menu)

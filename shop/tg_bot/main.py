@@ -17,10 +17,7 @@ sys.path.append(str(BASE_DIR))
 
 from shop import config 
 from shop.tg_bot.bot.handlers.examinate_sub_handler import examinate
-
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'shop.app.settings')
-django.setup()
+from shop.tg_bot.bot.handlers.catalog_handler import catalog
 
 
 dp = Dispatcher()
@@ -33,6 +30,7 @@ async def main():
     
     dp.include_routers(
         examinate,
+        catalog,
     )
     
     await dp.start_polling(bot)
