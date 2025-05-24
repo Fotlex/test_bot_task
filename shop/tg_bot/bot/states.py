@@ -2,4 +2,5 @@ from aiogram.fsm.state import State, StatesGroup
 
 
 class Steps(StatesGroup):
-    menu = State()
+    catalog_name = State()
+    item_count = State()

@@ -35,7 +35,7 @@ async def is_user_subscribed(chat_id: int, user_id: int, bot: Bot) -> bool:
     
     
 @examinate.message(CommandStart())
-async def cmd_start(message: Message, user: User, state: FSMContext):
+async def cmd_start(message: Message, user: User):
     in_channel = await is_user_subscribed(config.CHANEL_ID, user.id, message.bot)
     in_group = await is_user_subscribed(config.GROUP_ID, user.id, message.bot)
     
@@ -44,7 +44,6 @@ async def cmd_start(message: Message, user: User, state: FSMContext):
             f'{MENU_TEXT} {user.first_name}',
             reply_markup=menu_keyboard()
         )
-        await state.set_state(Steps.menu)
         return
     
     await message.answer(
@@ -54,7 +53,7 @@ async def cmd_start(message: Message, user: User, state: FSMContext):
     
     
 @examinate.callback_query(F.data == 'submit')
-async def exam_begin(callback: CallbackQuery, user: User, state: FSMContext):
+async def exam_begin(callback: CallbackQuery, user: User):
     await callback.message.delete()
     await callback.answer('')
     in_channel = await is_user_subscribed(config.CHANEL_ID, user.id, callback.bot)
@@ -62,7 +61,6 @@ async def exam_begin(callback: CallbackQuery, user: User, state: FSMContext):
     
     if in_channel and in_group:
         await callback.message.answer(f'{MENU_TEXT} {user.first_name}', reply_markup=menu_keyboard())
-        await state.set_state(Steps.menu)
         return
     
     await callback.message.answer(

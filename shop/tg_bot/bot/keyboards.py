@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.append(str(BASE_DIR))
 
 from shop import config
-from shop.database.models import Category
+from shop.database.models import Category, Subcategory
 
 
 PAGES = 6
@@ -70,3 +70,69 @@ async def categoty_keyboard(page: int = 0) -> InlineKeyboardMarkup:
     ])
     
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+
+async def subcategory_intkeyboard(category_name, page: int = 0):
+    keyboard = []
+    subcategories = []
+    category = await Category.objects.aget(name=category_name)
+    
+    async for item in Subcategory.objects.filter(category=category):
+        subcategories.append(item)
+        
+    subcategories_count = await sync_to_async(len)(subcategories)
+    subcategories = subcategories[page * PAGES:(page + 1) * PAGES]
+    
+    for pair in batched(subcategories, n=2):
+        keyboard.append(list())
+        for item in pair:
+            keyboard[-1].append(InlineKeyboardButton(
+                text=item.name,
+                callback_data=f'subcategory_{item.name}'
+            ))
+            
+    keyboard.append(list())
+    
+    if page != 0:
+        keyboard[-1].append(
+            InlineKeyboardButton(
+                text=BACK_BUTTON_TEXT,
+                callback_data=f'subcatchange_{page - 1}'
+            )
+        )
+        
+    if (page + 1) * PAGES < subcategories_count:
+        keyboard[-1].append(
+            InlineKeyboardButton(
+                text=FRONT_BUTTON_TEXT,
+                callback_data=f'subcatchange_{page + 1}'
+            )
+        )
+        
+    keyboard.append([InlineKeyboardButton(
+        text=GO_CATEGORYES_BTN_TEXT,
+        callback_data='catalog'
+    )])
+    
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+        
+        
+def item_keyboard(item_name: str):
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=GET_ITEM_IN_BUCKED, callback_data=f'item_{item_name}')],
+    ])
+    
+    
+def item_count_keyboard():
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=MINUS_ITEM_TEXT, callback_data='downcount'),
+         InlineKeyboardButton(text=PLUS_ITEM_TEXT, callback_data='upcount')],
+        [InlineKeyboardButton(text=SUBMIT_ITEM_TEXT, callback_data='iteminbucked')]
+    ])
+    
+    
+def submit_item_keyboard():
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=GET_ITEM_IN_BUCKED, callback_data='items_in_backed')],
+        [InlineKeyboardButton(text=CHANGE_ITEM_TEXT, callback_data='change_item_count')]
+    ])
