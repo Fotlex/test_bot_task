@@ -78,3 +78,11 @@ class FAQ(models.Model):
     class Meta:
         verbose_name = 'Вопросы и ответы'
         verbose_name_plural = 'Вопросы и ответы'
+        
+        
+class Broadcast(models.Model):
+    message = models.CharField(max_length=3000)
+    send = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.message
