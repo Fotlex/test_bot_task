@@ -8,6 +8,7 @@ from asgiref.sync import sync_to_async
 
 from .text import *
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.append(str(BASE_DIR))
 
@@ -135,4 +136,19 @@ def submit_item_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=GET_ITEM_IN_BUCKED, callback_data='items_in_backed')],
         [InlineKeyboardButton(text=CHANGE_ITEM_TEXT, callback_data='change_item_count')]
+    ])
+    
+    
+def bucked_keyboard(bucked_id):
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=BUCKED_SUBMIT_TEXT, callback_data=f'submititembuy_{bucked_id}')],
+        [InlineKeyboardButton(text=BUCKED_DELETE_ITEM, callback_data=f'deleteitemfrombucked_{bucked_id}')]
+    ])
+    
+
+
+async def go_pay():
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=PAY_SUBMIT, callback_data='get_pay_link')],
+        [InlineKeyboardButton(text=PAY_CHANGE_DATA, callback_data='change_delivery_data')]
     ])

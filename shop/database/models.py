@@ -53,3 +53,16 @@ class MessageStatus(models.Model):
     
     def __str__(self):
         return self.message_id
+    
+    
+class YookassaInfo(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    payment_id = models.CharField(max_length=1024)
+    number = models.CharField(max_length=20)
+    adress = models.CharField(max_length=256)
+    bucked_id = models.IntegerField(default=0)
+    
+    
+    def __str__(self):
+        return self.number
+    

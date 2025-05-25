@@ -9,7 +9,6 @@ from ..keyboards import *
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
 sys.path.append(str(BASE_DIR))
 
-from shop import config
 from shop.database.models import User, Item, Subcategory, UserBucked, MessageStatus
 
 catalog = Router()
