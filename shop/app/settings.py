@@ -8,7 +8,7 @@ sys.path.append(str(BASE_DIR))
 
 from shop import config 
 
-SECRET_KEY = 'django-insecure-kfs9(n7*kt_^5on&ne*4p92avp_otue%-vl(g+&uh67u)a(&u@'
+SECRET_KEY = config.SECRET_KEY_DJ
 
 DEBUG = True
 

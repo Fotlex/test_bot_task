@@ -10,6 +10,9 @@ from pathlib import Path
 from aiogram.client.default import DefaultBotProperties
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
+from aiogram.fsm.storage.redis import RedisStorage
+
+import redis.asyncio as aioredis
 
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'shop.app.settings')
@@ -28,10 +31,7 @@ from shop.tg_bot.bot.handlers.FAQ_handler import faq
 from shop.tg_bot.bot.yookassa import kassa_webhook
 
 
-dp = Dispatcher()
 
-dp.message.middleware(UserMiddleware())
-dp.callback_query.middleware(UserMiddleware())
 
 
 async def start_webhook(bot: Bot):
@@ -47,6 +47,13 @@ async def start_webhook(bot: Bot):
 
 async def main():
     bot = Bot(config.BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    redis = await aioredis.from_url(f'redis://{config.REDIS_HOST}:{config.REDIS_PORT}/2')
+
+    dp = Dispatcher(storage=RedisStorage(redis=redis))
+
+    dp.message.middleware(UserMiddleware())
+    dp.callback_query.middleware(UserMiddleware())
+    
     await start_webhook(bot=bot)
     dp.include_routers(
         examinate,

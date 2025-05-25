@@ -8,6 +8,12 @@ class User(models.Model):
     
     def __str__(self):
         return f'{self.id}: {self.first_name} {self.last_name}'
+    
+    
+    class Meta:
+        verbose_name = 'Клиент'
+        verbose_name_plural = 'Клиенты'
+
 
 
 class Category(models.Model):
@@ -17,12 +23,24 @@ class Category(models.Model):
         return self.name
     
     
+    class Meta:
+        verbose_name = 'Катугория'
+        verbose_name_plural = 'Категории'
+
+    
+    
 class Subcategory(models.Model):
     name = models.CharField(max_length=128)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.name
+    
+    
+    class Meta:
+        verbose_name = 'Подкатегория'
+        verbose_name_plural = 'Подкатегории'
+
     
     
 class Item(models.Model):
@@ -36,6 +54,12 @@ class Item(models.Model):
         return self.name
     
     
+    class Meta:
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
+
+    
+    
 class UserBucked(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
@@ -43,6 +67,12 @@ class UserBucked(models.Model):
     
     def __str__(self):
         return f'{self.user.first_name} | {self.item.name} | {self.count}'
+    
+    
+    class Meta:
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзины'
+
     
     
 class MessageStatus(models.Model):
@@ -67,6 +97,12 @@ class YookassaInfo(models.Model):
         return self.number
     
     
+    class Meta:
+        verbose_name = 'Платеж'
+        verbose_name_plural = 'Платежи'
+
+    
+    
 class FAQ(models.Model):
     question = models.CharField(max_length=512)
     answer = models.CharField(max_length=2048)
@@ -86,3 +122,10 @@ class Broadcast(models.Model):
     
     def __str__(self):
         return self.message
+    
+    
+    class Meta:
+        verbose_name = 'Рассылка'
+        verbose_name_plural = 'Рассылки'
+
+    
