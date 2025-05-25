@@ -24,6 +24,7 @@ from shop import config
 from shop.tg_bot.bot.handlers.examinate_sub_handler import examinate
 from shop.tg_bot.bot.handlers.catalog_handler import catalog
 from shop.tg_bot.bot.handlers.bucked_handler import bucked
+from shop.tg_bot.bot.handlers.FAQ_handler import faq
 from shop.tg_bot.bot.yookassa import kassa_webhook
 
 
@@ -51,6 +52,7 @@ async def main():
         examinate,
         catalog,
         bucked,
+        faq,
     )
     
     await dp.start_polling(bot)

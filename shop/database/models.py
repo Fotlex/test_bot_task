@@ -66,3 +66,15 @@ class YookassaInfo(models.Model):
     def __str__(self):
         return self.number
     
+    
+class FAQ(models.Model):
+    question = models.CharField(max_length=512)
+    answer = models.CharField(max_length=2048)
+    
+    def __str__(self):
+        return self.question
+    
+    
+    class Meta:
+        verbose_name = 'Вопросы и ответы'
+        verbose_name_plural = 'Вопросы и ответы'
